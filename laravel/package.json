@@ -1,0 +1,20 @@
+{
+  "private": true,
+  "scripts": {
+    "dev": "gulp watch"
+  },
+  "dependencies": {
+    "axios": "^0.15.3",
+    "gulp": "^3.9.1",
+    "jquery": "^3.1.0",
+    "jquery-serializejson": "^2.8.1",
+    "lvgs-bootstrap-admin": "git+ssh://git@github.com:lvgs/bootstrap-Admin.git",
+    "lvgs-laravel-gulp": "git+ssh://git@github.com:lvgs/laravel-gulp.git",
+    "run-sequence": "^2.0.0",
+    "vue": "^2.4.1",
+    "vue-template-compiler": "^2.4.1"
+  },
+  "browser": {
+    "vue": "vue/dist/vue.common.js"
+  }
+}

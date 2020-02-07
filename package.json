@@ -1,0 +1,11 @@
+{
+  "name": "project-example",
+  "version": "0.1.0",
+  "description": "Project Example",
+  "dependencies": {
+    "lvgs-tool-githooks": "git+ssh://git@github.com:lvgs/tool-GitHooks.git#master"
+  },
+  "author": "Leverages",
+  "license": "Leverages",
+  "private": true
+}

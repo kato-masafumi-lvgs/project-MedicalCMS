@@ -1,0 +1,2 @@
+laravel = git@github.com:lvgs/laravel.git
+laravel-with-lvm = -b master-lvm git@github.com:lvgs/laravel.git

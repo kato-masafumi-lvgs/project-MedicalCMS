@@ -1,0 +1,26 @@
+{
+    "name": "lvgs/tool-project-creator",
+    "description": "Laravel project template.",
+    "type": "project",
+    "license": "Leverages",
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://satis.lvgs.jp"
+        }
+    ],
+    "require": {},
+    "require-dev": {
+        "lvgs/tool-git-hooks": "dev-master"
+    },
+    "config": {
+        "secure-http": false
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "if [ -e ./setup.sh ]; then /bin/bash setup.sh && rm ./setup.sh ./helper.sh ./config && git rm ./setup.sh ./helper.sh ./config && git commit -m \"Delete setup script.\"; fi"
+        ]
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

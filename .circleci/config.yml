@@ -1,0 +1,46 @@
+version: 2.0
+jobs:
+  build:
+    docker:
+      - image: circleci/php:7.1
+    working_directory: ~/workspace
+    environment:
+      - GITHUB_USERNAME: ci-lvgs
+      - GITHUB_EMAIL: ci@lvgs.jp
+    steps:
+      - checkout:
+          path: repo
+      - add_ssh_keys:
+          fingerprints:
+            - "9d:0c:43:0e:ce:6b:64:b5:12:d9:07:02:7c:7f:e7:16"
+      - run: git clone git@github.com:lvgs/tool-CircleCI.git tool-CircleCI
+      - restore_cache:
+          keys:
+            - composer-{{ checksum "tool-CircleCI/composer.lock" }}
+      - run:
+          working_directory: tool-CircleCI
+          command: composer install --prefer-source --no-dev
+      - save_cache:
+          key: composer-{{ checksum "tool-CircleCI/composer.lock" }}
+          paths:
+            - tool-CircleCI/vendor
+      - run: git config --global user.name $GITHUB_USERNAME && git config --global user.email $GITHUB_EMAIL
+      - run:
+          working_directory: repo
+          command: git remote add ci git@github.com:$GITHUB_USERNAME/$CIRCLE_PROJECT_REPONAME.git
+      - run:
+          working_directory: repo
+          command: git fetch ci
+      - run:
+          working_directory: repo
+          command: git checkout -b circleci/$CIRCLE_PROJECT_USERNAME/$CIRCLE_BRANCH ci/master && git merge $CIRCLE_BRANCH
+      - run:
+          working_directory: tool-CircleCI
+          command: |
+            if [ ! -e custom/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME ]; then
+              bin/circle build:circle_config $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
+            fi
+      - run: cp tool-CircleCI/custom/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/config.yml repo/.circleci/config.yml
+      - run:
+          working_directory: repo
+          command: git add .circleci && git commit -m 'Update circle config' && git push -f ci circleci/$CIRCLE_PROJECT_USERNAME/$CIRCLE_BRANCH
